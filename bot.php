@@ -11,25 +11,22 @@ function get_string_between($string, $start, $end){
 function go($url,$cookie_name,$data,$header,$return){
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_name);
+	curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_name);//accept cookie
 	curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_name);
-	curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, -1);
+	curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, -1);//i just copied this line from stackoverflow
 	curl_setopt($ch, CURLOPT_DNS_USE_GLOBAL_CACHE, true ); 
 	curl_setopt($ch, CURLOPT_HEADER, 1);
 	//curl_setopt($ch, CURLOPT_PROXY, '127.0.0.1:8888');// use http request capture for debugging
 	curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: Mozilla/5.0 (Windows NT 6.2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36','Connection: keep-alive'));
 	if($header!=""){curl_setopt($ch, CURLOPT_HTTPHEADER, $header);}
-	if(!$data==""){curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));}
+	if(!$data==""){curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));}//post data
 	curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
 	$response = curl_exec($ch);
 	if($return=="return"){return $response;}
 }
-function getcookies($source){
-	preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $source, $matches);
-	return $matches;
-}
+
 class bot{
 	function __construct($data,$cookie_name){
 		$this->data=$data;
